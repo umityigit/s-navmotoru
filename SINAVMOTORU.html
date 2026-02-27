@@ -3,318 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>J.A.R.V.I.S. - Profesyonel Sınav Modülü</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
+    <title>J.A.R.V.I.S. V2 - Premium Sürüm</title>
     <style>
+        /* Yeni Klas Renk Paleti: Koyu Gri ve Kehribar (Amber) */
         :root {
-            --bg-body: #0f172a;
-            --bg-surface: #1e293b;
-            --bg-surface-hover: #334155;
-            --primary: #3b82f6;
-            --primary-hover: #2563eb;
-            --accent-purple: #8b5cf6;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
+            --bg-main: #121212;
+            --bg-card: #2d2d2d;
+            --primary: #f59e0b; /* Kehribar/Altın Sarısı */
+            --primary-hover: #d97706;
+            --text-light: #f3f4f6;
+            --text-muted: #9ca3af;
             --success: #10b981;
             --danger: #ef4444;
-            --warning: #f59e0b;
-            --border: #334155;
-            --radius-lg: 16px;
+            --border-color: #404040;
+            --radius: 12px;
         }
-
-        * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
-
         body {
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            padding: 24px;
-            background-image: radial-gradient(circle at top right, #1e293b, #0f172a 70%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-light);
+            margin: 0; padding: 20px;
+            display: flex; justify-content: center;
         }
-
-        .container {
-            width: 100%;
-            max-width: 1400px;
-            min-height: 90vh;
-            background: var(--bg-surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-
-        header {
-            padding: 20px 32px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(30, 41, 59, 0.8);
-            border-bottom: 1px solid var(--border);
-        }
-
-        h1 { font-size: 1.5rem; font-weight: 800; display: flex; align-items: center; gap: 10px; }
-        h1::before { content: ''; width: 12px; height: 12px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 10px var(--primary); }
-
-        #stats { font-size: 1rem; font-weight: 600; color: var(--text-muted); background: var(--bg-body); padding: 6px 14px; border-radius: 8px; border: 1px solid var(--border); }
-        #score { color: var(--success); font-weight: 800; }
-
-        .screen { padding: 40px; display: none; flex: 1; flex-direction: column; animation: fadeIn 0.3s ease-out; }
-        .screen.active { display: flex; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        button { padding: 12px 20px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; transition: all 0.2s; text-transform: uppercase; }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
-        .btn-sec { background: var(--bg-surface-hover); color: var(--text-main); border: 1px solid var(--border); }
-        .btn-sec:hover { background: #475569; transform: translateY(-2px); }
-
-        .q-box {
-            background: var(--bg-body);
+        .app-container {
+            width: 100%; max-width: 1200px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
             padding: 30px;
-            border-radius: var(--radius-lg);
-            font-size: 1.3rem;
-            line-height: 1.5;
-            margin-bottom: 25px;
-            border-left: 6px solid var(--primary);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid var(--border-color);
         }
+        h1 { color: var(--primary); text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 15px; margin-top: 0; }
+        
+        /* Kolaylaştırılmış Büyük Butonlar */
+        .btn {
+            background: var(--bg-card); color: var(--text-light);
+            border: 2px solid var(--primary); padding: 15px 20px;
+            border-radius: 8px; font-size: 16px; font-weight: bold;
+            cursor: pointer; transition: 0.3s;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn:hover { background: var(--primary); color: #000; }
+        .btn-action { background: var(--success); border-color: var(--success); color: #fff;}
+        .btn-action:hover { background: #059669; color: #fff; }
+        .btn-danger { background: var(--danger); border-color: var(--danger); color: #fff;}
+        .btn-danger:hover { background: #dc2626; color: #fff; }
 
+        .panel-header { display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; justify-content: center;}
+        
+        /* Bariz Dosya Yükleme Alanı */
+        .upload-area {
+            background: #1a1a1a; border: 2px dashed var(--primary);
+            padding: 25px; border-radius: var(--radius); text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .screen { display: none; }
+        .screen.active { display: block; }
+        
+        /* Soru Alanı ve Büyüme Efekti */
+        .q-card { background: #1a1a1a; padding: 25px; border-radius: var(--radius); margin-bottom: 20px; font-size: 1.3rem; line-height: 1.5; border-left: 5px solid var(--primary); }
         .opt-btn {
-            width: 100%;
-            padding: 18px 25px;
-            background: var(--bg-surface-hover);
-            border: 1px solid var(--border);
-            color: var(--text-main);
-            text-align: left;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            margin-bottom: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
+            display: block; width: 100%; text-align: left; background: #333;
+            border: 1px solid #555; padding: 18px 25px; border-radius: 8px;
+            margin-bottom: 12px; font-size: 1.15rem; color: #fff;
+            cursor: pointer; transition: 0.2s;
         }
+        .opt-btn:hover { background: var(--primary); color: #000; border-color: var(--primary); transform: scale(1.02) translateX(10px); }
+        .opt-btn.correct { background: var(--success); color: white; border-color: var(--success); }
+        .opt-btn.wrong { background: var(--danger); color: white; border-color: var(--danger); }
 
-        .opt-btn:hover:not(:disabled) {
-            transform: scale(1.01) translateX(8px);
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.4);
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; }
+        .lesson-card {
+            background: #1a1a1a; border: 1px solid var(--border-color);
+            padding: 25px 20px; border-radius: var(--radius); text-align: center;
+            cursor: pointer; transition: 0.3s; position: relative;
         }
-
-        .opt-btn.correct { background: var(--success) !important; color: white; border-color: var(--success); }
-        .opt-btn.wrong { background: var(--danger) !important; color: white; border-color: var(--danger); }
-
-        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; margin-top: 30px; }
-        .menu-btn {
-            background: var(--bg-body);
-            padding: 40px 20px;
-            border-radius: 12px;
-            text-align: center;
-            border: 1px solid var(--border);
-            cursor: pointer;
-            transition: 0.3s;
-            font-weight: 700;
-            position: relative;
-        }
-        .menu-btn:hover { transform: translateY(-5px); border-color: var(--primary); background: var(--bg-surface-hover); }
-
-        .del-lesson { position: absolute; top: 10px; right: 10px; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; }
-        .del-lesson:hover { color: var(--danger); }
-
-        textarea, input { width: 100%; padding: 15px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-body); color: white; outline: none; }
+        .lesson-card:hover { border-color: var(--primary); box-shadow: 0 5px 15px rgba(245, 158, 11, 0.2); transform: translateY(-5px); }
+        .lesson-title { font-size: 1.2rem; font-weight: bold; color: var(--primary); }
+        .del-btn { position: absolute; top: 10px; right: 10px; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; border:none; background:none; }
+        .del-btn:hover { color: var(--danger); }
         
-        #notes-drawer {
-            position: fixed; right: 0; top: 0; width: 350px; height: 100vh;
-            background: var(--bg-surface); border-left: 1px solid var(--border);
-            transform: translateX(100%); transition: 0.4s; z-index: 1000; padding: 30px;
-        }
-        #notes-drawer.open { transform: translateX(0); }
-        
-        .note-card { background: var(--bg-body); padding: 15px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid var(--accent-purple); display: flex; justify-content: space-between; }
-        
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 100; display: none; justify-content: center; align-items: center; }
-        .modal-box { background: var(--bg-surface); padding: 40px; border-radius: 16px; width: 400px; text-align: center; border: 1px solid var(--border); }
-        
-        /* Mobil uyumluluk için */
-        @media (max-width: 768px) {
-            header { flex-direction: column; gap: 15px; }
-            .tools-panel-btns { flex-direction: column; }
-        }
+        textarea, input[type="text"] { width: 100%; padding: 15px; background: #1a1a1a; border: 1px solid var(--border-color); color: #fff; border-radius: 8px; margin-bottom: 15px; font-size: 16px; box-sizing: border-box;}
+        textarea:focus, input[type="text"]:focus { outline: none; border-color: var(--primary); }
     </style>
 </head>
 <body>
-
-<div class="container">
-    <header>
-        <h1>J.A.R.V.I.S. Eğitim</h1>
-        <div id="stats">Doğru: <span id="score">0</span></div>
-        <div style="display:flex; gap:10px;">
-            <button class="btn-sec" onclick="app.toggleNotes()">📝 Notlar</button>
-            <button class="btn-sec" onclick="app.home()">≡ Panel</button>
-        </div>
-    </header>
-
-    <div id="scr-menu" class="screen active">
-        <div class="tools-panel-btns" style="display:flex; gap:10px; margin-bottom:20px;">
-            <button class="btn-sec" style="flex:1" onclick="app.downloadBackup()">💾 Yedeği İndir</button>
-            <button class="btn-primary" style="flex:1; background: var(--success);" onclick="document.getElementById('backup-file').click()">📂 Yedeği Yükle (JSON)</button>
-            <button class="btn-primary" style="flex:1; background: var(--accent-purple);" onclick="app.findDuplicates()">🔍 Banko Sorular</button>
-            
-            <input type="file" id="backup-file" accept=".json" style="display:none;" onchange="app.uploadBackup(event)">
-        </div>
-
-        <div class="menu-grid" id="menu-list"></div>
+<div class="app-container">
+    <h1>J.A.R.V.I.S. V2 ⚡ Premium Arayüz</h1>
+    
+    <div id="screen-main" class="screen active">
         
-        <div style="margin-top:40px; border-top:1px solid var(--border); padding-top:30px;">
-            <h3 style="color:var(--text-muted); font-size:1rem; margin-bottom:10px;">YENİ SORU EKLE (YAZI İLE)</h3>
-            <textarea id="import-text" rows="4" placeholder="Ham metin veriyi buraya yapıştır..."></textarea>
-            <div style="display:flex; gap:10px; margin-top:10px;">
-                <input type="text" id="import-subject" placeholder="Ders / Modül Adı">
-                <button class="btn-sec" onclick="app.preview()">👁️ Önizle</button>
-                <button class="btn-primary" style="background:var(--success)" onclick="app.saveImport()">💾 Kaydet</button>
+        <div class="upload-area">
+            <h3 style="margin-top:0; color: var(--text-muted); margin-bottom: 15px;">📂 JSON YEDEĞİ YÜKLE</h3>
+            <input type="file" id="file-upload" accept=".json" style="max-width: 100%; font-size:16px; color:var(--primary);" onchange="app.loadJSON(event)">
+            <p style="font-size: 1rem; color: var(--success); font-weight:bold; margin-top:10px;" id="upload-msg"></p>
+        </div>
+
+        <div class="panel-header">
+            <button class="btn" onclick="app.downloadJSON()">💾 Cihaza Yedek İndir</button>
+            <button class="btn btn-action" onclick="app.showAddScreen()">➕ Yeni Soru Ekle (Yazıyla)</button>
+        </div>
+
+        <h2 style="border-bottom: 1px solid #404040; padding-bottom: 10px;">📚 Kayıtlı Modüller</h2>
+        <div id="module-list" class="menu-grid">
             </div>
-            <div id="preview-box" style="display:none; margin-top:15px; color:var(--success); font-weight:bold;" id="preview-msg"></div>
-        </div>
     </div>
 
-    <div id="scr-quiz" class="screen">
-        <div class="q-box" id="q-text"></div>
+    <div id="screen-add" class="screen">
+        <button class="btn" style="margin-bottom: 20px;" onclick="app.showScreen('screen-main')">⬅ Ana Panele Dön</button>
+        <h2 style="color:var(--primary);">📝 Yeni Veri Girişi</h2>
+        <input type="text" id="new-module-name" placeholder="Ders / Modül Adı Yazınız (Örn: Tıbbi Arşiv)">
+        <textarea id="new-module-data" rows="8" placeholder="Kopyaladığınız ham soruları buraya yapıştırın..."></textarea>
+        <button class="btn btn-action" style="width: 100%; padding: 20px; font-size:18px;" onclick="app.saveNewData()">💾 Soruları Sisteme Kaydet</button>
+    </div>
+
+    <div id="screen-exam" class="screen">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <button class="btn" onclick="app.showScreen('screen-main')">⬅ Sınavdan Çık</button>
+            <span style="font-size: 1.2rem; font-weight: bold; color: var(--success); background:#1a1a1a; padding:10px 20px; border-radius:8px;">Doğru: <span id="score">0</span></span>
+        </div>
+        
+        <div id="q-text" class="q-card">Soru buraya gelecek...</div>
         <div id="q-opts"></div>
-        <div style="display:flex; gap:15px; margin-top:30px;">
-            <button class="btn-sec" style="flex:1" onclick="app.prev()">⬅ Geri</button>
-            <button class="btn-primary" style="flex:2" onclick="app.check(true)">Cevabı Kilitle</button>
-            <button class="btn-sec" style="flex:1" onclick="app.next()">İleri ➡</button>
+        
+        <div style="margin-top: 30px; display: flex; gap: 15px;">
+            <button class="btn" style="flex:1;" onclick="app.prevQ()">⬅ Önceki</button>
+            <button class="btn btn-action" style="flex:2; font-size:18px;" onclick="app.lockAnswer()">Cevabı Kilitle</button>
+            <button class="btn" style="flex:1;" onclick="app.nextQ()">Sonraki ➡</button>
         </div>
     </div>
 
-    <div id="scr-dupes" class="screen">
-        <h2 style="color:var(--warning); margin-bottom:20px;">🔍 Banko Tespit Edilenler</h2>
-        <div id="dupes-list" style="overflow-y:auto; flex:1;"></div>
-        <button class="btn-sec" style="margin-top:20px;" onclick="app.home()">Geri Dön</button>
-    </div>
-</div>
-
-<div id="notes-drawer">
-    <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
-        <h3 style="color:var(--accent-purple);">📌 Çalışma Notları</h3>
-        <span onclick="app.toggleNotes()" style="cursor:pointer; color:var(--danger); font-size:1.5rem;">&times;</span>
-    </div>
-    <div id="notes-list" style="max-height:70vh; overflow-y:auto; padding-right:10px;"></div>
-    <input type="text" id="note-input" placeholder="Not yazıp ENTER'a bas..." onkeypress="app.addNote(event)" style="margin-top:20px;">
-</div>
-
-<div id="modal-setup" class="modal-overlay">
-    <div class="modal-box">
-        <h3 id="modal-exam-name" style="color:white; margin-bottom:20px;">Sınav Ayarları</h3>
-        <p style="margin:15px 0; color:var(--text-muted)">Kaç Soru Çözmek İstiyorsun?</p>
-        <input type="number" id="q-limit" value="20" style="text-align:center; font-size:1.2rem; font-weight:bold;">
-        <div style="display:flex; gap:10px; margin-top:30px;">
-            <button class="btn-sec" onclick="app.closeSetup()" style="flex:1">İptal</button>
-            <button class="btn-primary" onclick="app.startExamFromModal()" style="flex:1">🚀 Başlat</button>
-        </div>
-    </div>
 </div>
 
 <script>
     const app = {
-        db: JSON.parse(localStorage.getItem('jarvis_exam_db')) || {},
-        notes: JSON.parse(localStorage.getItem('jarvis_notes')) || [],
-        currentLesson: null,
-        currentQuestions: [],
-        currentIndex: 0,
+        db: JSON.parse(localStorage.getItem('jarvis_v2_db')) || {},
+        currentModule: null,
+        questions: [],
+        qIndex: 0,
         score: 0,
-        tempQuestions: [],
 
-        save() { localStorage.setItem('jarvis_exam_db', JSON.stringify(this.db)); this.renderMenu(); },
-        saveNotes() { localStorage.setItem('jarvis_notes', JSON.stringify(this.notes)); this.renderNotes(); },
+        init() { this.renderModules(); },
 
-        renderMenu() {
-            const list = document.getElementById('menu-list');
+        save() { localStorage.setItem('jarvis_v2_db', JSON.stringify(this.db)); this.renderModules(); },
+
+        showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        },
+
+        showAddScreen() { this.showScreen('screen-add'); },
+
+        renderModules() {
+            const list = document.getElementById('module-list');
             list.innerHTML = '';
-            Object.keys(this.db).forEach(lesson => {
-                const btn = document.createElement('div');
-                btn.className = 'menu-btn';
-                btn.innerHTML = `${lesson}<br><small style="color:var(--primary)">${this.db[lesson].length} Soru</small><span class="del-lesson" onclick="app.deleteLesson(event, '${lesson}')">×</span>`;
-                btn.onclick = (e) => { if(e.target.className !== 'del-lesson') this.openSetup(lesson); };
-                list.appendChild(btn);
-            });
-        },
-
-        deleteLesson(e, lesson) { e.stopPropagation(); if(confirm(`"${lesson}" modülünü tamamen silmek istediğine emin misin?`)) { delete this.db[lesson]; this.save(); } },
-
-        openSetup(lesson) {
-            this.currentLesson = lesson;
-            document.getElementById('modal-exam-name').innerText = lesson;
-            document.getElementById('modal-setup').style.display = 'flex';
-        },
-        closeSetup() { document.getElementById('modal-setup').style.display = 'none'; },
-
-        startExamFromModal() {
-            const limit = parseInt(document.getElementById('q-limit').value) || 20;
-            const all = [...this.db[this.currentLesson]].sort(() => Math.random() - 0.5);
-            this.currentQuestions = all.slice(0, limit);
-            this.currentIndex = 0;
-            this.score = 0;
-            this.closeSetup();
-            this.showScreen('scr-quiz');
-            this.renderQuestion();
-        },
-
-        renderQuestion() {
-            const q = this.currentQuestions[this.currentIndex];
-            document.getElementById('q-text').innerText = `${this.currentIndex + 1}. ${q.q}`;
-            const optBox = document.getElementById('q-opts');
-            optBox.innerHTML = '';
-            q.opts.forEach((opt, i) => {
-                const b = document.createElement('button');
-                b.className = 'opt-btn';
-                b.innerText = opt;
-                b.onclick = () => this.check(i);
-                optBox.appendChild(b);
-            });
-            document.getElementById('score').innerText = this.score;
-        },
-
-        check(idx) {
-            const q = this.currentQuestions[this.currentIndex];
-            const btns = document.querySelectorAll('.opt-btn');
-            if(idx === true) { alert("Lütfen bir şık seçin."); return; }
-            
-            if(idx === q.ans) {
-                btns[idx].classList.add('correct');
-                this.score++;
-            } else {
-                btns[idx].classList.add('wrong');
-                btns[q.ans].classList.add('correct');
+            const keys = Object.keys(this.db);
+            if (keys.length === 0) {
+                list.innerHTML = '<p style="color:var(--text-muted); font-size:1.1rem; grid-column: 1 / -1; text-align:center;">Sistemde kayıtlı modül bulunamadı. Lütfen yukarıdan JSON yedeği yükleyin veya yeni soru ekleyin.</p>';
+                return;
             }
-            document.getElementById('score').innerText = this.score;
-            
-            // Seçim yapıldıktan sonra diğer butonları kilitle
-            btns.forEach(b => b.disabled = true);
-            
-            setTimeout(() => this.next(), 1200);
+            keys.forEach(mod => {
+                const div = document.createElement('div');
+                div.className = 'lesson-card';
+                div.innerHTML = `
+                    <button class="del-btn" title="Sil" onclick="app.deleteMod(event, '${mod}')">✖</button>
+                    <div class="lesson-title">${mod}</div>
+                    <div style="margin-top:10px; color:var(--text-muted);">${this.db[mod].length} Soru</div>
+                `;
+                div.onclick = (e) => {
+                    if(e.target.className !== 'del-btn') this.startExam(mod);
+                };
+                list.appendChild(div);
+            });
         },
 
-        next() { if(this.currentIndex < this.currentQuestions.length - 1) { this.currentIndex++; this.renderQuestion(); } else { alert(`Sınav Bitti! Toplam Doğru: ${this.score}`); this.home(); } },
-        prev() { if(this.currentIndex > 0) { this.currentIndex--; this.renderQuestion(); } },
+        deleteMod(e, modName) {
+            e.stopPropagation();
+            if(confirm(`"${modName}" modülünü tamamen silmek istediğinize emin misiniz?`)) {
+                delete this.db[modName];
+                this.save();
+            }
+        },
 
-        preview() {
-            const raw = document.getElementById('import-text').value;
-            this.tempQuestions = [];
+        loadJSON(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    const data = JSON.parse(event.target.result);
+                    this.db = { ...this.db, ...data };
+                    this.save();
+                    document.getElementById('upload-msg').innerText = "✅ YEDEK BAŞARIYLA YÜKLENDİ!";
+                    setTimeout(() => document.getElementById('upload-msg').innerText = "", 4000);
+                    e.target.value = "";
+                } catch (err) {
+                    alert("❌ Hata! Yüklediğiniz dosya geçerli bir sınav yedeği (JSON) değil.");
+                }
+            };
+            reader.readAsText(file);
+        },
+
+        downloadJSON() {
+            const blob = new Blob([JSON.stringify(this.db)], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `JARVIS_V2_Yedek.json`;
+            a.click();
+        },
+
+        saveNewData() {
+            const name = document.getElementById('new-module-name').value.trim();
+            const raw = document.getElementById('new-module-data').value;
+            if (!name || !raw) return alert("Hata: İsim ve soru alanı boş olamaz!");
+
+            const temp = [];
             const lines = raw.split('\n').filter(l => l.trim() !== "");
             let currentQ = null;
 
             lines.forEach(line => {
                 if(line.match(/^\d+[\.\)]/)) {
-                    if(currentQ) this.tempQuestions.push(currentQ);
+                    if(currentQ) temp.push(currentQ);
                     currentQ = { q: line.replace(/^\d+[\.\)]\s*/, ""), opts: [], ans: 0 };
                 } else if(line.match(/^[A-E][\.\)]/i)) {
                     if(currentQ) currentQ.opts.push(line.replace(/^[A-E][\.\)]\s*/i, ""));
@@ -323,96 +233,76 @@
                     if(currentQ) currentQ.ans = letter.charCodeAt(0) - 65;
                 }
             });
-            if(currentQ) this.tempQuestions.push(currentQ);
-            document.getElementById('preview-box').style.display = 'block';
-            document.getElementById('preview-box').innerText = `✅ ${this.tempQuestions.length} Soru Başarıyla Ayrıştırıldı.`;
-        },
+            if(currentQ) temp.push(currentQ);
 
-        saveImport() {
-            const sub = document.getElementById('import-subject').value.trim();
-            if(!sub || this.tempQuestions.length === 0) return alert("Hata: Ders adı eksik veya önizleme yapılmadı.");
-            if(!this.db[sub]) this.db[sub] = [];
-            this.db[sub].push(...this.tempQuestions);
-            this.save();
-            document.getElementById('import-text').value = '';
-            document.getElementById('import-subject').value = '';
-            document.getElementById('preview-box').style.display = 'none';
-            alert("Sorular Başarıyla Kaydedildi!");
-        },
-
-        findDuplicates() {
-            const all = [];
-            Object.keys(this.db).forEach(l => {
-                this.db[l].forEach(q => all.push({ ...q, lesson: l }));
-            });
-            const dupes = all.filter((q, i) => all.findIndex(x => x.q === q.q) !== i);
-            const list = document.getElementById('dupes-list');
-            if(dupes.length === 0) {
-                list.innerHTML = "<p style='color:var(--text-muted)'>Sistemde hiç tekrar eden soru bulunamadı.</p>";
+            if (temp.length > 0) {
+                if(!this.db[name]) this.db[name] = [];
+                this.db[name].push(...temp);
+                this.save();
+                document.getElementById('new-module-name').value = "";
+                document.getElementById('new-module-data').value = "";
+                alert("✅ Başarılı! Sisteme " + temp.length + " adet soru eklendi.");
+                this.showScreen('screen-main');
             } else {
-                list.innerHTML = dupes.map(d => `<div class="note-card" style="border-left-color:var(--warning); flex-direction:column; align-items:flex-start;"><span style="font-size:0.8rem; color:var(--text-muted); margin-bottom:5px;">[${d.lesson}]</span>${d.q}</div>`).join("");
-            }
-            this.showScreen('scr-dupes');
-        },
-
-        showScreen(id) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-        },
-
-        home() { this.showScreen('scr-menu'); },
-        
-        toggleNotes() { document.getElementById('notes-drawer').classList.toggle('open'); },
-        
-        addNote(e) {
-            if(e.key === 'Enter') {
-                const val = e.target.value.trim();
-                if(val) { this.notes.push(val); this.saveNotes(); e.target.value = ''; }
+                alert("❌ Hata: Soru anlaşılamadı. Ham verinin formatını kontrol edin.");
             }
         },
-        
-        renderNotes() {
-            const list = document.getElementById('notes-list');
-            list.innerHTML = this.notes.map((n, i) => `<div class="note-card"><span>${n}</span> <span style="color:var(--danger); cursor:pointer; font-weight:bold;" onclick="app.delNote(${i})">×</span></div>`).join("");
-        },
-        
-        delNote(i) { this.notes.splice(i, 1); this.saveNotes(); },
-        
-        downloadBackup() {
-            const blob = new Blob([JSON.stringify(this.db)], { type: 'application/json' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `Sinav_Motoru_Yedek_${new Date().toLocaleDateString('tr-TR')}.json`;
-            a.click();
+
+        startExam(modName) {
+            this.currentModule = modName;
+            this.questions = [...this.db[modName]].sort(() => Math.random() - 0.5);
+            this.qIndex = 0;
+            this.score = 0;
+            this.showScreen('screen-exam');
+            this.renderQ();
         },
 
-        // İŞTE EKSİK OLAN JSON YÜKLEME (OKUMA) MOTONU
-        uploadBackup(event) {
-            const file = event.target.files[0];
-            if (!file) return;
+        renderQ() {
+            if(this.questions.length === 0) return;
+            const q = this.questions[this.qIndex];
+            document.getElementById('q-text').innerText = `${this.qIndex + 1}. ${q.q}`;
+            const optsBox = document.getElementById('q-opts');
+            optsBox.innerHTML = '';
+            q.opts.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'opt-btn';
+                btn.innerText = opt;
+                btn.onclick = () => this.checkAns(i);
+                optsBox.appendChild(btn);
+            });
+            document.getElementById('score').innerText = this.score;
+        },
 
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                try {
-                    const importedData = JSON.parse(e.target.result);
-                    
-                    // Mevcut verilerle yüklenenleri birleştirir
-                    this.db = { ...this.db, ...importedData };
-                    this.save();
-                    
-                    alert("✅ Yedeğin Başarıyla Sisteme Yüklendi!");
-                    // Aynı dosyayı tekrar seçebilmek için inputu sıfırla
-                    event.target.value = ''; 
-                } catch (error) {
-                    alert("❌ Hata! Yüklemeye çalıştığınız dosya geçerli bir Sınav Motoru yedeği (JSON) değil.");
-                    console.error("Yükleme Hatası:", error);
-                }
-            };
-            reader.readAsText(file);
-        }
+        checkAns(idx) {
+            const q = this.questions[this.qIndex];
+            const btns = document.querySelectorAll('.opt-btn');
+            if (idx === true) return alert("Lütfen önce bir şık seçin!");
+            
+            if (idx === q.ans) {
+                btns[idx].classList.add('correct');
+                this.score++;
+            } else {
+                btns[idx].classList.add('wrong');
+                if(btns[q.ans]) btns[q.ans].classList.add('correct');
+            }
+            document.getElementById('score').innerText = this.score;
+            btns.forEach(b => b.disabled = true);
+            setTimeout(() => this.nextQ(), 1200);
+        },
+
+        nextQ() {
+            if (this.qIndex < this.questions.length - 1) {
+                this.qIndex++; this.renderQ();
+            } else {
+                alert(`🏁 Sınav Bitti! Toplam Doğru Sayınız: ${this.score}`);
+                this.showScreen('screen-main');
+            }
+        },
+        prevQ() { if (this.qIndex > 0) { this.qIndex--; this.renderQ(); } },
+        lockAnswer() { this.checkAns(true); }
     };
 
-    window.onload = () => { app.renderMenu(); app.renderNotes(); };
+    window.onload = () => app.init();
 </script>
 </body>
 </html>
